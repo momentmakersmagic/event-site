@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import { Pagination, Autoplay } from "swiper/modules";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
 import heroBg from "../assets/hero_background.jpeg";
 import slide2 from "../assets/hero_slide2_background.png";
@@ -13,8 +13,6 @@ import logo from "../assets/logo.jpeg";
 function Hero() {
   const swiperRef = useRef(null);
   const videoRef = useRef(null);
-
-  const [videoFinished, setVideoFinished] = useState(false);
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
@@ -35,7 +33,7 @@ function Hero() {
       <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
 
       {/* CONTENT */}
-      <div className="relative z-10 w-full max-w-5xl text-center mt-6 px-4">
+      <div className="relative z-10 w-full max-w-6xl text-center mt-6 px-4">
 
         {/* BRAND TEXT */}
         <div className="inline-block bg-yellow-500/20 backdrop-blur-md px-4 py-1 rounded-md border border-yellow-400/30">
@@ -45,7 +43,7 @@ function Hero() {
         </div>
 
         {/* TITLE */}
-        <h1 className="text-white text-xl md:text-5xl font-bold mt-3">
+        <h1 className="text-white text-2xl md:text-5xl font-bold mt-3 leading-tight">
           We Make Every Event <br />
           <span className="text-pink-400">Unforgettable & Magical ✨</span>
         </h1>
@@ -55,20 +53,21 @@ function Hero() {
         </p>
 
         {/* SLIDER */}
-        <div className="mt-6 rounded-2xl overflow-hidden shadow-2xl">
+        <div className="mt-6 rounded-2xl overflow-hidden shadow-2xl w-full">
 
           <Swiper
             modules={[Pagination, Autoplay]}
             pagination={{ clickable: true }}
             loop={true}
             speed={800}
-            autoplay={false} // 🔥 IMPORTANT
+            autoplay={false}
             onSwiper={(swiper) => (swiperRef.current = swiper)}
+            className="w-full"
           >
 
             {/* 🎥 SLIDE 1 */}
             <SwiperSlide>
-              <div className="h-72 md:h-[420px] w-full bg-black">
+              <div className="w-full h-[220px] md:h-[420px] bg-black">
 
                 <video
                   ref={videoRef}
@@ -76,16 +75,13 @@ function Hero() {
                   autoPlay
                   muted
                   playsInline
+                  preload="metadata"
                   className="w-full h-full object-cover"
                   onEnded={() => {
-                    setVideoFinished(true);
+                    swiperRef.current?.slideNext();
 
-                    // 🔥 MOVE NEXT
-                    swiperRef.current.slideNext();
-
-                    // 🔥 START AUTOPLAY AFTER VIDEO
                     setTimeout(() => {
-                      swiperRef.current.autoplay.start();
+                      swiperRef.current?.autoplay.start();
                     }, 500);
                   }}
                 />
@@ -95,23 +91,25 @@ function Hero() {
 
             {/* 🟣 SLIDE 2 */}
             <SwiperSlide>
-              <div className="h-72 md:h-[420px] relative flex items-center justify-center bg-black">
+              <div className="w-full h-[220px] md:h-[420px] relative flex items-center justify-center bg-black">
 
-                {/* ✅ PERFECT IMAGE FIT */}
+                {/* FIXED IMAGE */}
                 <img
                   src={slide2}
-                  className="w-full h-full object-contain"
+                  alt="Decoration"
+                  loading="lazy"
+                  className="w-full h-full object-cover"
                 />
 
                 <div className="absolute">
-                  <div className="bg-black/60 p-5 rounded-xl text-white text-center">
-                    <h2 className="text-lg md:text-3xl font-bold">
+                  <div className="bg-black/60 p-4 md:p-5 rounded-xl text-white text-center">
+                    <h2 className="text-base md:text-3xl font-bold">
                       Decoration for Every Occasion
                     </h2>
 
                     <button
                       onClick={() => scrollTo("services")}
-                      className="mt-4 bg-pink-500 px-6 py-2 rounded-full"
+                      className="mt-3 md:mt-4 bg-pink-500 px-5 py-2 rounded-full"
                     >
                       Explore
                     </button>
@@ -123,16 +121,16 @@ function Hero() {
 
             {/* ⭐ SLIDE 3 */}
             <SwiperSlide>
-              <div className="h-72 md:h-[420px] bg-white flex flex-col justify-center items-center px-6">
+              <div className="w-full h-[220px] md:h-[420px] bg-white flex flex-col justify-center items-center px-6">
 
                 {/* LOGO */}
-                <img src={logo} className="w-16 mb-3" />
+                <img src={logo} alt="logo" className="w-14 md:w-16 mb-3" />
 
-                <h2 className="text-xl md:text-3xl font-bold text-center text-gray-800">
+                <h2 className="text-lg md:text-3xl font-bold text-center text-gray-800">
                   Why Choose Us
                 </h2>
 
-                <div className="mt-6 grid grid-cols-2 gap-6 text-center text-sm">
+                <div className="mt-4 md:mt-6 grid grid-cols-2 gap-4 md:gap-6 text-center text-xs md:text-sm">
 
                   <div>
                     🎨
@@ -166,7 +164,7 @@ function Hero() {
         <div className="text-center mt-10">
           <button
             onClick={() => scrollTo("contact")}
-            className="bg-pink-500 text-white px-8 py-3 rounded-full"
+            className="bg-pink-500 hover:bg-pink-600 transition text-white px-8 py-3 rounded-full"
           >
             Start Planning Your Event
           </button>
