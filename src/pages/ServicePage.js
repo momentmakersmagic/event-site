@@ -1,82 +1,72 @@
 import { useParams, useNavigate } from "react-router-dom";
-
-// 🔥 FUTURE: SERVICE DATA
-const serviceData = {
-  "birthday-decoration": {
-    title: "Birthday Decoration",
-    desc: "Beautiful birthday setups for all ages.",
-  },
-  "baby-shower": {
-    title: "Baby Shower",
-    desc: "Celebrate motherhood with elegant themes.",
-  },
-  "naming-ceremony": {
-    title: "Naming Ceremony",
-    desc: "Traditional & modern naming events.",
-  },
-  "engagement": {
-    title: "Engagement",
-    desc: "Memorable engagement setups.",
-  },
-  "anniversary": {
-    title: "Anniversary",
-    desc: "Celebrate love and milestones.",
-  },
-  "photography-video": {
-    title: "Photography & Video",
-    desc: "Capture every special moment.",
-  },
-};
+import { useEffect } from "react";
 
 function ServicePage() {
   const { name } = useParams();
   const navigate = useNavigate();
 
-  const service = serviceData[name];
+  // 🔥 SCROLL TO TOP
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [name]);
+
+  // 🔥 FORMAT NAME
+  const formatName = (text) => {
+    if (!text) return "";
+    return text
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  const serviceTitle = formatName(name);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 text-center px-4">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 pt-[90px] px-4 md:px-12 pb-16">
 
-      {/* IF SERVICE EXISTS */}
-      {service ? (
-        <>
-          <h1 className="text-3xl md:text-4xl font-bold text-pink-500">
-            {service.title}
-          </h1>
+      <div className="max-w-5xl mx-auto">
 
-          <p className="mt-3 text-gray-600">
-            {service.desc}
-          </p>
-
-          <p className="mt-4 text-gray-500">
-            🚧 This page is under development
-          </p>
-        </>
-      ) : (
-        <>
-          <h1 className="text-3xl font-bold text-red-500">
-            Service Not Found
-          </h1>
-        </>
-      )}
-
-      {/* BUTTONS */}
-      <div className="mt-6 flex gap-4">
+        {/* 🔙 BACK */}
         <button
           onClick={() => navigate("/")}
-          className="bg-pink-500 text-white px-5 py-2 rounded-full"
+          className="mb-6 text-pink-500 hover:text-pink-600"
         >
-          Go Home
+          ← Back to Home
         </button>
 
-        <button
-          onClick={() => navigate("/#contact")}
-          className="border border-pink-500 text-pink-500 px-5 py-2 rounded-full"
-        >
-          Plan This Event
-        </button>
+        {/* TITLE */}
+        <h1 className="text-3xl md:text-5xl font-bold text-gray-800">
+          {serviceTitle}
+        </h1>
+
+        <p className="mt-4 text-gray-600 max-w-2xl">
+          We are currently building this service page with full details,
+          pricing, and real event showcases.
+        </p>
+
+        {/* CARD */}
+        <div className="mt-10 bg-white rounded-2xl p-10 text-center shadow-xl border">
+
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
+            🚧 Coming Soon
+          </h2>
+
+          <p className="text-gray-500 mt-2">
+            This service page will be available shortly.
+          </p>
+
+          {/* 🔥 FIXED BUTTON */}
+          <button
+            onClick={() =>
+              navigate("/", { state: { scrollTo: "services" } })
+            }
+            className="mt-6 bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full transition"
+          >
+            Explore Other Services
+          </button>
+
+        </div>
+
       </div>
-
     </div>
   );
 }

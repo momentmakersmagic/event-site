@@ -31,56 +31,75 @@ function FAQ() {
   };
 
   return (
-    <section className="bg-white py-20 px-4">
-      <div id="faq"
-      className="max-w-3xl mx-auto text-center">
+    <section id="faq" className="bg-white py-16 px-4 md:px-12 overflow-hidden">
 
-        {/* TITLE */}
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+      {/* HEADER */}
+      <div className="max-w-4xl mx-auto text-left">
+
+        <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
           Questions?
         </h2>
 
-        <h3 className="text-2xl md:text-3xl font-bold text-pink-500 mt-2">
+        <h3 className="text-xl md:text-3xl font-bold text-pink-500 mt-2">
           We've Got Answers.
         </h3>
 
-        {/* SUBTITLE */}
-        <p className="text-gray-500 mt-4 text-sm md:text-base">
+        <p className="text-gray-500 mt-3 text-sm md:text-base max-w-md">
           Everything you need to know before planning your perfect event.
         </p>
 
       </div>
 
       {/* FAQ LIST */}
-      <div className="max-w-3xl mx-auto mt-10 space-y-4">
+      <div className="max-w-4xl mx-auto mt-10 space-y-4">
 
-        {faqs.map((faq, index) => (
-          <div
-            key={index}
-            className="border rounded-xl p-4 cursor-pointer transition hover:shadow-md"
-            onClick={() => toggleFAQ(index)}
-          >
-            {/* QUESTION */}
-            <div className="flex justify-between items-center">
-              <h4 className="text-gray-800 font-medium text-sm md:text-base">
-                {faq.q}
-              </h4>
+        {faqs.map((faq, index) => {
+          const isActive = activeIndex === index;
 
-              <span className="text-pink-500 text-xl">
-                {activeIndex === index ? "−" : "+"}
-              </span>
+          return (
+            <div
+              key={index}
+              className={`rounded-xl border p-4 md:p-5 cursor-pointer transition-all duration-300
+              ${
+                isActive
+                  ? "border-pink-400 bg-pink-50 shadow-md"
+                  : "bg-white hover:shadow-md"
+              }`}
+              onClick={() => toggleFAQ(index)}
+            >
+
+              {/* QUESTION */}
+              <div className="flex justify-between items-center gap-4">
+
+                <h4 className="text-gray-800 font-medium text-sm md:text-base">
+                  {faq.q}
+                </h4>
+
+                <span className={`text-xl transition-transform ${
+                  isActive ? "rotate-45 text-pink-500" : "text-gray-400"
+                }`}>
+                  +
+                </span>
+
+              </div>
+
+              {/* ANSWER (SMOOTH EXPAND) */}
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  isActive ? "max-h-40 mt-3" : "max-h-0"
+                }`}
+              >
+                <p className="text-gray-500 text-sm leading-relaxed">
+                  {faq.a}
+                </p>
+              </div>
+
             </div>
-
-            {/* ANSWER */}
-            {activeIndex === index && (
-              <p className="text-gray-500 mt-3 text-sm text-left">
-                {faq.a}
-              </p>
-            )}
-          </div>
-        ))}
+          );
+        })}
 
       </div>
+
     </section>
   );
 }

@@ -23,53 +23,53 @@ function Process() {
   ];
 
   return (
-    <section className="bg-gradient-to-b from-white to-gray-50 py-20 px-4 md:px-12">
-      <div id="process"
-      className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+    <section id="process" className="bg-gradient-to-b from-white to-gray-50 py-16 px-4 md:px-12 overflow-hidden">
+
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 
         {/* LEFT SIDE */}
-        <div>
-          {/* GOLD TAG */}
-          <div className="inline-block bg-yellow-500/20 px-4 py-2 rounded-md border border-yellow-400/30 mb-4">
+        <div className="text-left">
+
+          <div className="inline-block bg-yellow-500/20 px-4 py-1 rounded-md border border-yellow-400/30 mb-3">
             <span className="text-yellow-600 font-semibold text-sm">
               HOW IT WORKS
             </span>
           </div>
 
-          {/* TITLE */}
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-800 leading-tight">
             Your Event in <br />
             <span className="text-pink-500">4 Easy Steps</span>
           </h2>
 
-          {/* SUBTITLE */}
           <p className="text-gray-500 mt-4 text-sm md:text-base max-w-md">
             From planning to execution, we ensure a seamless and enjoyable
-            experience for every client — no stress, just celebration.
+            experience — no stress, just celebration.
           </p>
+
         </div>
 
-        {/* RIGHT SIDE - STEPS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* RIGHT SIDE */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
 
-          {steps.map((step) => (
+          {steps.map((step, index) => (
             <div
               key={step.id}
-              className={`p-6 rounded-xl border transition-all duration-300 
+              className={`relative p-5 md:p-6 rounded-xl transition-all duration-300
               hover:-translate-y-1 hover:shadow-xl
               ${
-                step.id === "02"
-                  ? "border-pink-400 shadow-lg bg-white"
-                  : "bg-white"
+                index === 1
+                  ? "bg-pink-50 border border-pink-400 shadow-md"
+                  : "bg-white border"
               }`}
             >
-              {/* STEP NUMBER */}
-              <h3 className="text-pink-500 text-2xl font-bold mb-2">
+
+              {/* NUMBER BADGE */}
+              <div className="absolute -top-3 -left-3 bg-pink-500 text-white text-xs px-3 py-1 rounded-full shadow">
                 {step.id}
-              </h3>
+              </div>
 
               {/* TITLE */}
-              <h4 className="text-lg font-semibold text-gray-800">
+              <h4 className="text-base md:text-lg font-semibold text-gray-800 mt-2">
                 {step.title}
               </h4>
 
@@ -77,6 +77,7 @@ function Process() {
               <p className="text-gray-500 text-sm mt-2 leading-relaxed">
                 {step.desc}
               </p>
+
             </div>
           ))}
 
@@ -84,7 +85,6 @@ function Process() {
 
       </div>
 
-      
     </section>
   );
 }

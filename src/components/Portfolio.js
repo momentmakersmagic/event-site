@@ -39,7 +39,7 @@ function Portfolio() {
       ? allImages
       : data[category] || [];
 
-  // 🔥 AUTO SLIDE
+  // AUTO SLIDE
   useEffect(() => {
     setIndex(0);
 
@@ -68,12 +68,12 @@ function Portfolio() {
     category === "photography-video";
 
   return (
-    <div id="portfolio" className="bg-white py-16 px-4 md:px-12">
+    <section id="portfolio" className="bg-white py-16 px-4 md:px-12 overflow-hidden">
 
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
         {/* LEFT */}
-        <div className="text-center md:text-left">
+        <div className="text-left">
 
           <div className="inline-block bg-yellow-500/20 border border-yellow-400/30 px-4 py-1 rounded-md mb-3">
             <span className="text-yellow-500 font-semibold text-sm">
@@ -81,18 +81,18 @@ function Portfolio() {
             </span>
           </div>
 
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-800 leading-tight">
             Events We've <br />
             <span className="text-pink-500">Brought to Life</span>
           </h2>
 
-          <p className="mt-4 text-gray-600 text-sm md:text-lg">
+          <p className="mt-4 text-gray-600 text-sm md:text-lg max-w-md">
             A glimpse of the magic we've created — every event crafted
             with creativity, precision, and passion.
           </p>
 
           {/* FILTER BUTTONS */}
-          <div className="mt-5 flex flex-wrap gap-2 justify-center md:justify-start">
+          <div className="mt-5 flex flex-wrap gap-2">
 
             {categories.map((item) => (
               <button
@@ -116,11 +116,12 @@ function Portfolio() {
         {/* RIGHT */}
         <div className="w-full">
 
-          <div className="h-72 md:h-[420px] rounded-xl overflow-hidden shadow-xl bg-gray-100 relative">
+          {/* 🔥 IMAGE BOX FIX */}
+          <div className="relative w-full aspect-[4/3] md:h-[420px] rounded-xl overflow-hidden shadow-xl bg-gray-100">
 
             {/* COMING SOON */}
             {isComingSoon && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 text-center">
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-500 text-center bg-white">
                 <h3 className="text-lg font-semibold">
                   Coming Soon ✨
                 </h3>
@@ -130,13 +131,19 @@ function Portfolio() {
               </div>
             )}
 
-            {/* IMAGE */}
+            {/* IMAGE FIX */}
             {!isComingSoon && images.length > 0 && (
               <img
                 src={images[index]}
                 alt="portfolio"
-                className="w-full h-full object-cover transition duration-700"
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover transition duration-700"
               />
+            )}
+
+            {/* 🔥 GRADIENT OVERLAY (PREMIUM LOOK) */}
+            {!isComingSoon && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
             )}
 
           </div>
@@ -145,7 +152,7 @@ function Portfolio() {
 
       </div>
 
-    </div>
+    </section>
   );
 }
 

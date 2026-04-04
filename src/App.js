@@ -1,6 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
-import Navbar from "./components/Navbar";
+import Layout from "./components/Layout";
+
 import Hero from "./components/Hero";
 import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
@@ -8,16 +10,26 @@ import Process from "./components/Process";
 import Reviews from "./components/Reviews";
 import FAQ from "./components/FAQ";
 import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import WhatsAppButton from "./components/WhatsAppButton";
 
 import ServicePage from "./pages/ServicePage";
 
-// ✅ HOME PAGE (your current design)
+// 🔥 HOME PAGE
 function Home() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.scrollTo) {
+      const el = document.getElementById(location.state.scrollTo);
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth" });
+        }, 200);
+      }
+    }
+  }, [location]);
+
   return (
     <>
-      <Navbar />
       <Hero />
       <Services />
       <Portfolio />
@@ -25,18 +37,35 @@ function Home() {
       <Reviews />
       <FAQ />
       <Contact />
-      <Footer />
-      <WhatsAppButton />
     </>
   );
 }
 
-// ✅ ROUTES
+// 🔥 ROUTES WITH LAYOUT
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/service/:name" element={<ServicePage />} />
+
+      {/* HOME */}
+      <Route
+        path="/"
+        element={
+          <Layout>
+            <Home />
+          </Layout>
+        }
+      />
+
+      {/* SERVICE PAGE */}
+      <Route
+        path="/service/:name"
+        element={
+          <Layout>
+            <ServicePage />
+          </Layout>
+        }
+      />
+
     </Routes>
   );
 }

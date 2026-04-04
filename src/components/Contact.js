@@ -13,61 +13,42 @@ function Contact() {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
 
-  // 🔥 HANDLE INPUT
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🔥 VALIDATION
   const validate = () => {
     let newErrors = {};
 
-    // NAME
-    if (!form.name.trim()) {
-      newErrors.name = "Name is required";
-    }
+    if (!form.name.trim()) newErrors.name = "Name is required";
 
-    // PHONE
     if (!form.phone) {
       newErrors.phone = "Phone is required";
     } else if (!/^\d{10}$/.test(form.phone)) {
       newErrors.phone = "Enter a valid 10-digit phone number";
     }
 
-    // EMAIL
     if (!form.email) {
       newErrors.email = "Email is required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)
-    ) {
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)) {
       newErrors.email = "Enter a valid email address";
     }
 
-    // EVENT
-    if (!form.event) {
-      newErrors.event = "Select event type";
-    }
+    if (!form.event) newErrors.event = "Select event type";
 
-    // DATE (NO PAST DATE)
     if (!form.date) {
       newErrors.date = "Select date";
     } else {
       const today = new Date().toISOString().split("T")[0];
-      if (form.date < today) {
-        newErrors.date = "Date cannot be in the past";
-      }
+      if (form.date < today) newErrors.date = "Date cannot be in the past";
     }
 
-    // MESSAGE
-    if (!form.message.trim()) {
-      newErrors.message = "Message is required";
-    }
+    if (!form.message.trim()) newErrors.message = "Message is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // 🔥 SUBMIT
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -90,30 +71,35 @@ function Contact() {
   return (
     <section
       id="contact"
-      className="bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#581c87] text-white py-20 px-4 md:px-12"
+      className="bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#581c87] text-white py-16 px-4 md:px-12 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
 
         {/* LEFT */}
-        <div>
+        <div className="text-left">
 
-          <h2 className="text-3xl md:text-5xl font-bold">
+          <h2 className="text-3xl md:text-5xl font-bold leading-tight">
             Ready to Plan <br />
             <span className="text-yellow-400">Something Epic?</span>
           </h2>
 
-          <p className="text-gray-300 mt-4 max-w-md">
+          <p className="text-gray-300 mt-4 max-w-md text-sm md:text-base">
             Tell us about your event and we’ll get back within 24 hours.
           </p>
 
-          {/* CONTACT INFO */}
+          {/* CONTACT CARDS */}
           <div className="mt-8 space-y-4">
+
             {["Location", "Phone", "Email", "Working Hours"].map((item, i) => (
-              <div key={i} className="bg-white/10 p-4 rounded-xl">
+              <div
+                key={i}
+                className="bg-white/10 p-4 rounded-xl backdrop-blur-md border border-white/10 hover:bg-white/20 transition"
+              >
                 <p className="text-xs text-gray-300 uppercase">{item}</p>
                 <p className="font-medium">__________</p>
               </div>
             ))}
+
           </div>
 
         </div>
@@ -132,9 +118,10 @@ function Contact() {
                   value={form.name}
                   onChange={handleChange}
                   placeholder="Your Name"
-                  className="border p-3 rounded-lg w-full focus:ring-2 focus:ring-pink-400"
+                  className={`border p-3 rounded-lg w-full outline-none transition
+                  ${errors.name ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
                 />
-                {errors.name && <p className="text-red-500 text-xs">{errors.name}</p>}
+                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
               </div>
 
               <div>
@@ -147,9 +134,10 @@ function Contact() {
                   }}
                   placeholder="Phone Number"
                   maxLength="10"
-                  className="border p-3 rounded-lg w-full focus:ring-2 focus:ring-pink-400"
+                  className={`border p-3 rounded-lg w-full outline-none transition
+                  ${errors.phone ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
                 />
-                {errors.phone && <p className="text-red-500 text-xs">{errors.phone}</p>}
+                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
               </div>
 
             </div>
@@ -161,9 +149,10 @@ function Contact() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="Email Address"
-                className="border p-3 rounded-lg w-full focus:ring-2 focus:ring-pink-400"
+                className={`border p-3 rounded-lg w-full outline-none transition
+                ${errors.email ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
               />
-              {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
             </div>
 
             {/* EVENT + DATE */}
@@ -174,7 +163,8 @@ function Contact() {
                   name="event"
                   value={form.event}
                   onChange={handleChange}
-                  className="border p-3 rounded-lg w-full focus:ring-2 focus:ring-pink-400"
+                  className={`border p-3 rounded-lg w-full outline-none transition
+                  ${errors.event ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
                 >
                   <option value="">Select Event Type</option>
                   <option>Birthday Decoration</option>
@@ -184,7 +174,7 @@ function Contact() {
                   <option>Anniversary</option>
                   <option>Photography & Video</option>
                 </select>
-                {errors.event && <p className="text-red-500 text-xs">{errors.event}</p>}
+                {errors.event && <p className="text-red-500 text-xs mt-1">{errors.event}</p>}
               </div>
 
               <div>
@@ -194,9 +184,10 @@ function Contact() {
                   value={form.date}
                   onChange={handleChange}
                   min={new Date().toISOString().split("T")[0]}
-                  className="border p-3 rounded-lg w-full focus:ring-2 focus:ring-pink-400"
+                  className={`border p-3 rounded-lg w-full outline-none transition
+                  ${errors.date ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
                 />
-                {errors.date && <p className="text-red-500 text-xs">{errors.date}</p>}
+                {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}
               </div>
 
             </div>
@@ -209,9 +200,10 @@ function Contact() {
                 onChange={handleChange}
                 rows="4"
                 placeholder="Tell us about your event..."
-                className="border p-3 rounded-lg w-full focus:ring-2 focus:ring-pink-400"
+                className={`border p-3 rounded-lg w-full outline-none transition
+                ${errors.message ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
               ></textarea>
-              {errors.message && <p className="text-red-500 text-xs">{errors.message}</p>}
+              {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
             </div>
 
             {/* BUTTON */}
@@ -230,7 +222,7 @@ function Contact() {
 
       {/* SUCCESS POPUP */}
       {success && (
-        <div className="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg">
+        <div className="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg animate-bounce">
           ✅ Thank you! We’ll contact you within 24 hours.
         </div>
       )}

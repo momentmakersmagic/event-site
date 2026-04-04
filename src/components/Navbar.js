@@ -19,18 +19,22 @@ function Navbar() {
     }
   };
 
+  // 🔥 FINAL FIXED NAVIGATION FUNCTION
   const goToService = (item) => {
     const url = item
       .toLowerCase()
       .replace(/ & /g, " ")
       .replace(/ /g, "-");
 
-    navigate(`/service/${url}`);
     setMenuOpen(false);
     setServiceOpen(false);
+
+    setTimeout(() => {
+      navigate(`/service/${url}`);
+    }, 100);
   };
 
-  // CLOSE DROPDOWN OUTSIDE
+  // CLOSE DROPDOWN
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -83,7 +87,7 @@ function Navbar() {
     <>
       {/* NAVBAR */}
       <nav className="fixed top-0 w-full backdrop-blur-md bg-[#0f172a]/90 text-white z-50 shadow-md">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
+        <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
 
           {/* LOGO */}
           <div
@@ -91,7 +95,7 @@ function Navbar() {
             onClick={() => navigate("/")}
           >
             <img src={logo} alt="logo" className="w-8 h-8 rounded" />
-            <h1 className="font-bold text-base md:text-lg">
+            <h1 className="font-bold text-sm md:text-lg">
               The <span className="text-pink-500">Moment</span> Makers
             </h1>
           </div>
@@ -99,38 +103,39 @@ function Navbar() {
           {/* DESKTOP MENU */}
           <ul className="hidden md:flex gap-6 items-center text-sm">
 
-            {/* SERVICES */}
             <li className="relative" ref={dropdownRef}>
               <div className="flex items-center gap-1 cursor-pointer">
-                <span
-                  onClick={() => scrollTo("services")}
-                  className={active === "services" ? "text-pink-400" : ""}
-                >
+
+                {/* CLICK → SCROLL */}
+                <span onClick={() => scrollTo("services")}>
                   Services
                 </span>
 
+                {/* DROPDOWN TOGGLE */}
                 <span
-                  onClick={() => setServiceOpen(!serviceOpen)}
-                  className={`text-xs transition-transform ${
-                    serviceOpen ? "rotate-180" : ""
-                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setServiceOpen(!serviceOpen);
+                  }}
+                  className={`text-xs ${serviceOpen ? "rotate-180" : ""}`}
                 >
-                  &#9662;
+                  ▾
                 </span>
               </div>
 
+              {/* DROPDOWN */}
               <div
-                className={`absolute mt-2 w-56 bg-white text-black rounded-xl shadow-lg p-3 transition-all duration-300 ${
+                className={`absolute mt-2 w-56 bg-white text-black rounded-xl shadow-lg p-3 ${
                   serviceOpen
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 -translate-y-2 pointer-events-none"
+                    ? "opacity-100"
+                    : "opacity-0 pointer-events-none"
                 }`}
               >
                 {servicesList.map((item, i) => (
                   <p
                     key={i}
                     onClick={() => goToService(item)}
-                    className="hover:text-pink-500 cursor-pointer py-2"
+                    className="cursor-pointer py-2 hover:text-pink-500"
                   >
                     {item}
                   </p>
@@ -138,92 +143,96 @@ function Navbar() {
               </div>
             </li>
 
-            <li onClick={() => scrollTo("portfolio")} className="cursor-pointer">
-              Portfolio
-            </li>
-            <li onClick={() => scrollTo("process")} className="cursor-pointer">
-              Process
-            </li>
-            <li onClick={() => scrollTo("review")} className="cursor-pointer">
-              Review
-            </li>
-            <li onClick={() => scrollTo("faq")} className="cursor-pointer">
-              FAQ
-            </li>
+            <li onClick={() => scrollTo("portfolio")}>Portfolio</li>
+            <li onClick={() => scrollTo("process")}>Process</li>
+            <li onClick={() => scrollTo("review")}>Review</li>
+            <li onClick={() => scrollTo("faq")}>FAQ</li>
 
             <button
               onClick={() => scrollTo("contact")}
-              className="bg-pink-500 px-4 py-1 rounded-full hover:scale-105 transition"
+              className="bg-pink-500 px-4 py-1 rounded-full"
             >
               Book Now
             </button>
           </ul>
 
           {/* MOBILE BUTTON */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="text-2xl"
-            >
-              ☰
-            </button>
-          </div>
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="md:hidden text-2xl"
+          >
+            ☰
+          </button>
         </div>
       </nav>
 
       {/* MOBILE MENU */}
-      <div
-        className={`fixed inset-0 z-50 transition-all duration-300 ${
-          menuOpen ? "visible" : "invisible"
-        }`}
-      >
+      <div className={`fixed inset-0 z-50 ${menuOpen ? "visible" : "invisible"}`}>
+
         {/* OVERLAY */}
         <div
-          className={`absolute inset-0 bg-black/50 transition-opacity ${
-            menuOpen ? "opacity-100" : "opacity-0"
-          }`}
+          className="absolute inset-0 bg-black/50"
           onClick={() => setMenuOpen(false)}
         ></div>
 
         {/* SIDEBAR */}
         <div
-          className={`absolute right-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-xl p-6 transform transition-transform duration-300 ${
+          className={`absolute right-0 top-0 h-full w-[80%] max-w-[320px] bg-white p-6 transform ${
             menuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {/* CLOSE */}
+          {/* HEADER */}
           <div className="flex justify-between items-center">
-            <h2 className="font-semibold text-lg">Menu</h2>
-            <button
-              onClick={() => setMenuOpen(false)}
-              className="text-xl"
-            >
-              ✖
-            </button>
+            <h2 className="font-semibold text-lg text-black">Menu</h2>
+            <button onClick={() => setMenuOpen(false)}>✖</button>
           </div>
 
-          <ul className="mt-6 space-y-5 text-black text-base">
+          <ul className="mt-6 space-y-5 text-black">
 
             <li onClick={() => scrollTo("home")} className="cursor-pointer">
               Home
             </li>
 
-            {/* SERVICES */}
+            {/* 🔥 SERVICES FIXED */}
             <li>
-              <div
-                className="flex justify-between cursor-pointer"
-                onClick={() => setServiceOpen(!serviceOpen)}
-              >
-                Services <span>{serviceOpen ? "▴" : "▾"}</span>
+              <div className="flex justify-between items-center">
+
+                {/* TEXT CLICK */}
+                <span
+                  onClick={() => scrollTo("services")}
+                  className="cursor-pointer"
+                >
+                  Services
+                </span>
+
+                {/* DROPDOWN */}
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setServiceOpen(!serviceOpen);
+                  }}
+                  className="cursor-pointer"
+                >
+                  {serviceOpen ? "▴" : "▾"}
+                </span>
               </div>
 
               {serviceOpen && (
                 <ul className="ml-3 mt-3 space-y-3 text-sm text-gray-600 border-l pl-3">
+
                   {servicesList.map((item, i) => (
-                    <li key={i} onClick={() => goToService(item)}>
+                    <button
+                      key={i}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        goToService(item);
+                      }}
+                      className="block w-full text-left hover:text-pink-500"
+                    >
                       {item}
-                    </li>
+                    </button>
                   ))}
+
                 </ul>
               )}
             </li>
@@ -239,6 +248,7 @@ function Navbar() {
             >
               Book Now
             </button>
+
           </ul>
         </div>
       </div>
