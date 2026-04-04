@@ -1,50 +1,43 @@
+import { Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Services from "./components/Services";
+import Portfolio from "./components/Portfolio";
+import Process from "./components/Process";
+import Reviews from "./components/Reviews";
+import FAQ from "./components/FAQ";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import WhatsAppButton from "./components/WhatsAppButton";
+
+import ServicePage from "./pages/ServicePage";
+
+// ✅ HOME PAGE (your current design)
+function Home() {
+  return (
+    <>
+      <Navbar />
+      <Hero />
+      <Services />
+      <Portfolio />
+      <Process />
+      <Reviews />
+      <FAQ />
+      <Contact />
+      <Footer />
+      <WhatsAppButton />
+    </>
+  );
+}
+
+// ✅ ROUTES
 function App() {
   return (
-    <div style={{
-      background: "#0a0a0a",
-      color: "white",
-      height: "100vh",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      flexDirection: "column",
-      textAlign: "center"
-    }}>
-      
-      <h1 style={{ fontSize: "50px", fontWeight: "bold" }}>
-        We Make Every Event 
-        <span style={{ color: "#FFD700" }}> Unforgettable</span>
-        <span style={{ color: "#ff4da6" }}> & Magical ✨</span>
-      </h1>
-
-      <p style={{ marginTop: "15px", color: "#aaa" }}>
-        From weddings to birthdays — we bring your vision to life.
-      </p>
-
-      <div style={{ marginTop: "25px" }}>
-        <button style={{
-          background: "#ff4da6",
-          border: "none",
-          padding: "12px 25px",
-          borderRadius: "30px",
-          color: "white",
-          marginRight: "10px"
-        }}>
-          Plan My Event
-        </button>
-
-        <button style={{
-          border: "1px solid white",
-          padding: "12px 25px",
-          borderRadius: "30px",
-          background: "transparent",
-          color: "white"
-        }}>
-          View Our Work
-        </button>
-      </div>
-
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/service/:name" element={<ServicePage />} />
+    </Routes>
   );
 }
 
