@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/logo.jpeg";
 
 function Navbar() {
@@ -9,17 +9,32 @@ function Navbar() {
 
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
+  // 🔥 FINAL SCROLL FUNCTION (WORKS EVERYWHERE)
   const scrollTo = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+    // 👉 If not on home → go home first
+    if (location.pathname !== "/") {
+      navigate("/", { state: { scrollTo: id } });
       setMenuOpen(false);
       setServiceOpen(false);
+      return;
     }
+
+    // 👉 If on home → scroll directly
+    const section = document.getElementById(id);
+    if (section) {
+      window.scrollTo({
+        top: section.offsetTop - 80,
+        behavior: "smooth",
+      });
+    }
+
+    setMenuOpen(false);
+    setServiceOpen(false);
   };
 
-  // 🔥 FINAL FIXED NAVIGATION FUNCTION
+  // 🔥 SERVICE NAVIGATION
   const goToService = (item) => {
     const url = item
       .toLowerCase()
@@ -45,8 +60,10 @@ function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ACTIVE SECTION
+  // ACTIVE SECTION (ONLY ON HOME)
   useEffect(() => {
+    if (location.pathname !== "/") return;
+
     const handleScroll = () => {
       const sections = [
         "home",
@@ -72,7 +89,7 @@ function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [location]);
 
   const servicesList = [
     "Birthday Decoration",
@@ -103,15 +120,17 @@ function Navbar() {
           {/* DESKTOP MENU */}
           <ul className="hidden md:flex gap-6 items-center text-sm">
 
+            {/* SERVICES */}
             <li className="relative" ref={dropdownRef}>
               <div className="flex items-center gap-1 cursor-pointer">
 
-                {/* CLICK → SCROLL */}
-                <span onClick={() => scrollTo("services")}>
+                <span
+                  onClick={() => scrollTo("services")}
+                  className={active === "services" ? "text-pink-400" : ""}
+                >
                   Services
                 </span>
 
-                {/* DROPDOWN TOGGLE */}
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
@@ -123,7 +142,6 @@ function Navbar() {
                 </span>
               </div>
 
-              {/* DROPDOWN */}
               <div
                 className={`absolute mt-2 w-56 bg-white text-black rounded-xl shadow-lg p-3 ${
                   serviceOpen
@@ -143,10 +161,18 @@ function Navbar() {
               </div>
             </li>
 
-            <li onClick={() => scrollTo("portfolio")}>Portfolio</li>
-            <li onClick={() => scrollTo("process")}>Process</li>
-            <li onClick={() => scrollTo("review")}>Review</li>
-            <li onClick={() => scrollTo("faq")}>FAQ</li>
+            <li onClick={() => scrollTo("portfolio")} className="cursor-pointer">
+              Portfolio
+            </li>
+            <li onClick={() => scrollTo("process")} className="cursor-pointer">
+              Process
+            </li>
+            <li onClick={() => scrollTo("review")} className="cursor-pointer">
+              Review
+            </li>
+            <li onClick={() => scrollTo("faq")} className="cursor-pointer">
+              FAQ
+            </li>
 
             <button
               onClick={() => scrollTo("contact")}
@@ -193,11 +219,10 @@ function Navbar() {
               Home
             </li>
 
-            {/* 🔥 SERVICES FIXED */}
+            {/* SERVICES */}
             <li>
               <div className="flex justify-between items-center">
 
-                {/* TEXT CLICK */}
                 <span
                   onClick={() => scrollTo("services")}
                   className="cursor-pointer"
@@ -205,7 +230,6 @@ function Navbar() {
                   Services
                 </span>
 
-                {/* DROPDOWN */}
                 <span
                   onClick={(e) => {
                     e.stopPropagation();
@@ -219,7 +243,6 @@ function Navbar() {
 
               {serviceOpen && (
                 <ul className="ml-3 mt-3 space-y-3 text-sm text-gray-600 border-l pl-3">
-
                   {servicesList.map((item, i) => (
                     <button
                       key={i}
@@ -232,7 +255,6 @@ function Navbar() {
                       {item}
                     </button>
                   ))}
-
                 </ul>
               )}
             </li>
