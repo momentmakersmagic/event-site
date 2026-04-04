@@ -10,7 +10,6 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // 🔥 SCROLL FUNCTION
   const scrollTo = (id) => {
     const section = document.getElementById(id);
     if (section) {
@@ -20,7 +19,6 @@ function Navbar() {
     }
   };
 
-  // 🔥 SERVICE NAVIGATION
   const goToService = (item) => {
     const url = item
       .toLowerCase()
@@ -32,7 +30,7 @@ function Navbar() {
     setServiceOpen(false);
   };
 
-  // 🔥 CLOSE DROPDOWN OUTSIDE
+  // CLOSE DROPDOWN OUTSIDE
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -43,7 +41,7 @@ function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // 🔥 ACTIVE SECTION
+  // ACTIVE SECTION
   useEffect(() => {
     const handleScroll = () => {
       const sections = [
@@ -92,8 +90,8 @@ function Navbar() {
             className="flex items-center gap-2 cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <img src={logo} className="w-8 h-8 rounded" />
-            <h1 className="font-bold text-lg">
+            <img src={logo} alt="logo" className="w-8 h-8 rounded" />
+            <h1 className="font-bold text-base md:text-lg">
               The <span className="text-pink-500">Moment</span> Makers
             </h1>
           </div>
@@ -104,7 +102,6 @@ function Navbar() {
             {/* SERVICES */}
             <li className="relative" ref={dropdownRef}>
               <div className="flex items-center gap-1 cursor-pointer">
-
                 <span
                   onClick={() => scrollTo("services")}
                   className={active === "services" ? "text-pink-400" : ""}
@@ -122,7 +119,6 @@ function Navbar() {
                 </span>
               </div>
 
-              {/* DROPDOWN */}
               <div
                 className={`absolute mt-2 w-56 bg-white text-black rounded-xl shadow-lg p-3 transition-all duration-300 ${
                   serviceOpen
@@ -165,79 +161,87 @@ function Navbar() {
 
           {/* MOBILE BUTTON */}
           <div className="md:hidden">
-            <button onClick={() => setMenuOpen(true)}>☰</button>
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="text-2xl"
+            >
+              ☰
+            </button>
           </div>
         </div>
       </nav>
 
       {/* MOBILE MENU */}
-      {menuOpen && (
-        <>
-          {/* OVERLAY */}
-          <div
-            className="fixed inset-0 bg-black/40 z-40"
-            onClick={() => setMenuOpen(false)}
-          ></div>
+      <div
+        className={`fixed inset-0 z-50 transition-all duration-300 ${
+          menuOpen ? "visible" : "invisible"
+        }`}
+      >
+        {/* OVERLAY */}
+        <div
+          className={`absolute inset-0 bg-black/50 transition-opacity ${
+            menuOpen ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => setMenuOpen(false)}
+        ></div>
 
-          {/* SIDEBAR */}
-          <div className="fixed top-0 right-0 w-72 h-full bg-white shadow-lg z-50 p-6 transition-transform duration-300">
-
-            {/* CLOSE */}
-            <div className="flex justify-end">
-              <button onClick={() => setMenuOpen(false)}>✖</button>
-            </div>
-
-            <ul className="mt-6 space-y-4 text-black">
-
-              <li className="py-2 text-base" onClick={() => navigate("/")}>
-                Home
-              </li>
-
-              {/* SERVICES */}
-              <li>
-                <div
-                  className="flex justify-between cursor-pointer py-2 text-base"
-                  onClick={() => setServiceOpen(!serviceOpen)}
-                >
-                  Services <span>{serviceOpen ? "▴" : "▾"}</span>
-                </div>
-
-                {serviceOpen && (
-                  <ul className="ml-4 mt-2 space-y-3 text-sm text-gray-600 border-l pl-3">
-                    {servicesList.map((item, i) => (
-                      <li key={i} onClick={() => goToService(item)}>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-
-              <hr />
-
-              <li onClick={() => scrollTo("portfolio")} className="py-2">
-                Portfolio
-              </li>
-              <li onClick={() => scrollTo("process")} className="py-2">
-                Process
-              </li>
-              <li onClick={() => scrollTo("review")} className="py-2">
-                Review
-              </li>
-              <li onClick={() => scrollTo("faq")} className="py-2">
-                FAQ
-              </li>
-
-              <button
-                onClick={() => scrollTo("contact")}
-                className="w-full bg-pink-500 text-white py-3 rounded-full mt-6 text-base"
-              >
-                Book Now
-              </button>
-            </ul>
+        {/* SIDEBAR */}
+        <div
+          className={`absolute right-0 top-0 h-full w-[85%] max-w-sm bg-white shadow-xl p-6 transform transition-transform duration-300 ${
+            menuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* CLOSE */}
+          <div className="flex justify-between items-center">
+            <h2 className="font-semibold text-lg">Menu</h2>
+            <button
+              onClick={() => setMenuOpen(false)}
+              className="text-xl"
+            >
+              ✖
+            </button>
           </div>
-        </>
-      )}
+
+          <ul className="mt-6 space-y-5 text-black text-base">
+
+            <li onClick={() => scrollTo("home")} className="cursor-pointer">
+              Home
+            </li>
+
+            {/* SERVICES */}
+            <li>
+              <div
+                className="flex justify-between cursor-pointer"
+                onClick={() => setServiceOpen(!serviceOpen)}
+              >
+                Services <span>{serviceOpen ? "▴" : "▾"}</span>
+              </div>
+
+              {serviceOpen && (
+                <ul className="ml-3 mt-3 space-y-3 text-sm text-gray-600 border-l pl-3">
+                  {servicesList.map((item, i) => (
+                    <li key={i} onClick={() => goToService(item)}>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+
+            <li onClick={() => scrollTo("portfolio")}>Portfolio</li>
+            <li onClick={() => scrollTo("process")}>Process</li>
+            <li onClick={() => scrollTo("review")}>Review</li>
+            <li onClick={() => scrollTo("faq")}>FAQ</li>
+
+            <button
+              onClick={() => scrollTo("contact")}
+              className="w-full bg-pink-500 text-white py-3 rounded-full mt-6"
+            >
+              Book Now
+            </button>
+          </ul>
+        </div>
+      </div>
     </>
   );
 }
