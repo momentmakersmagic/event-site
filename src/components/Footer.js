@@ -46,31 +46,31 @@ function Footer() {
 
           <ul className="space-y-2 text-sm">
 
-            <li onClick={() => scrollTo("home")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => scrollTo("home")} className="hover:text-pink-400 cursor-pointer">
               Home
             </li>
 
-            <li onClick={() => scrollTo("services")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => scrollTo("services")} className="hover:text-pink-400 cursor-pointer">
               Services
             </li>
 
-            <li onClick={() => scrollTo("portfolio")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => scrollTo("portfolio")} className="hover:text-pink-400 cursor-pointer">
               Portfolio
             </li>
 
-            <li onClick={() => scrollTo("process")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => scrollTo("process")} className="hover:text-pink-400 cursor-pointer">
               Process
             </li>
 
-            <li onClick={() => scrollTo("review")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => scrollTo("review")} className="hover:text-pink-400 cursor-pointer">
               Review
             </li>
 
-            <li onClick={() => scrollTo("faq")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => scrollTo("faq")} className="hover:text-pink-400 cursor-pointer">
               FAQ
             </li>
 
-            <li onClick={() => scrollTo("contact")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => scrollTo("contact")} className="hover:text-pink-400 cursor-pointer">
               Book Now
             </li>
 
@@ -83,27 +83,27 @@ function Footer() {
 
           <ul className="space-y-2 text-sm">
 
-            <li onClick={() => goToService("Birthday Decoration")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => goToService("Birthday Decoration")} className="hover:text-pink-400 cursor-pointer">
               Birthday Decoration
             </li>
 
-            <li onClick={() => goToService("Baby Shower")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => goToService("Baby Shower")} className="hover:text-pink-400 cursor-pointer">
               Baby Shower
             </li>
 
-            <li onClick={() => goToService("Naming Ceremony")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => goToService("Naming Ceremony")} className="hover:text-pink-400 cursor-pointer">
               Naming Ceremony
             </li>
 
-            <li onClick={() => goToService("Engagement")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => goToService("Engagement")} className="hover:text-pink-400 cursor-pointer">
               Engagement
             </li>
 
-            <li onClick={() => goToService("Anniversary")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => goToService("Anniversary")} className="hover:text-pink-400 cursor-pointer">
               Anniversary
             </li>
 
-            <li onClick={() => goToService("Photography & Video")} className="hover:text-pink-400 cursor-pointer transition">
+            <li onClick={() => goToService("Photography & Video")} className="hover:text-pink-400 cursor-pointer">
               Photography & Video
             </li>
 
@@ -116,19 +116,46 @@ function Footer() {
 
           <ul className="space-y-3 text-sm">
 
+            {/* LOCATION */}
             <li>
               📍 <span className="text-gray-400">Bangalore, India</span>
             </li>
 
+            {/* PHONE */}
             <li>
-              📞 <span className="text-gray-400">+__________</span>
+              📞{" "}
+              <a
+                href="tel:6366047276"
+                className="text-gray-400 hover:text-pink-400"
+              >
+                +91 63660 47276
+              </a>
             </li>
 
+            {/* EMAIL */}
             <li>
-              📧 <span className="text-gray-400">momentmakersmagic@gmail.com</span>
+              📧{" "}
+              <a
+                href="mailto:momentmakersmagic@gmail.com?subject=Event Inquiry&body=Hello The Moment Makers,%0A%0AI would like to know more about your services."
+                className="text-gray-400 hover:text-pink-400 break-all"
+              >
+                momentmakersmagic@gmail.com
+              </a>
             </li>
 
           </ul>
+
+          {/* 🔥 INSTAGRAM */}
+          <div className="mt-4">
+            <a
+              href="https://www.instagram.com/themomentmakers_01"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-gradient-to-r from-pink-500 via-purple-500 to-yellow-500 px-4 py-2 rounded-full text-white text-xs hover:scale-105 transition"
+            >
+              📸 Follow on Instagram
+            </a>
+          </div>
 
           {/* CTA */}
           <button

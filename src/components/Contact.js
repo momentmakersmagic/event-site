@@ -14,9 +14,17 @@ function Contact() {
   const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // 🔥 RESET DATE IF GENERAL INQUIRY
+    if (name === "event" && value === "General Inquiry") {
+      setForm({ ...form, event: value, date: "" });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
+  // ✅ VALIDATION
   const validate = () => {
     let newErrors = {};
 
@@ -25,22 +33,25 @@ function Contact() {
     if (!form.phone) {
       newErrors.phone = "Phone is required";
     } else if (!/^\d{10}$/.test(form.phone)) {
-      newErrors.phone = "Enter a valid 10-digit phone number";
+      newErrors.phone = "Enter valid 10-digit number";
     }
 
     if (!form.email) {
       newErrors.email = "Email is required";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(form.email)) {
-      newErrors.email = "Enter a valid email address";
     }
 
     if (!form.event) newErrors.event = "Select event type";
 
-    if (!form.date) {
-      newErrors.date = "Select date";
-    } else {
-      const today = new Date().toISOString().split("T")[0];
-      if (form.date < today) newErrors.date = "Date cannot be in the past";
+    // 🔥 DATE VALIDATION
+    if (form.event !== "General Inquiry") {
+      if (!form.date) {
+        newErrors.date = "Select date";
+      } else {
+        const today = new Date().toISOString().split("T")[0];
+        if (form.date < today) {
+          newErrors.date = "Past dates are not allowed";
+        }
+      }
     }
 
     if (!form.message.trim()) newErrors.message = "Message is required";
@@ -49,10 +60,43 @@ function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
+  // ✅ SUBMIT
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (validate()) {
+      const message = `
+Hello The Moment Makers,
+
+Glad to connect with you 😊
+
+Here are my details:
+
+Name: ${form.name}
+Phone: ${form.phone}
+Email: ${form.email}
+Event: ${form.event}
+${form.event !== "General Inquiry" ? `Date: ${form.date}` : ""}
+
+Message:
+${form.message}
+      `;
+
+      const encodedMessage = encodeURIComponent(message);
+
+      const whatsappURL = `https://wa.me/916366047276?text=${encodedMessage}`;
+      const gmailURL = `https://mail.google.com/mail/?view=cm&fs=1&to=momentmakersmagic@gmail.com&su=Event Inquiry&body=${encodedMessage}`;
+
+      const choice = window.confirm(
+        "Send via WhatsApp (OK) or Email (Cancel)"
+      );
+
+      if (choice) {
+        window.open(whatsappURL, "_blank");
+      } else {
+        window.open(gmailURL, "_blank");
+      }
+
       setSuccess(true);
 
       setForm({
@@ -71,148 +115,147 @@ function Contact() {
   return (
     <section
       id="contact"
-      className="bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#581c87] text-white py-16 px-4 md:px-12 overflow-hidden"
+      className="bg-gradient-to-r from-[#0f172a] via-[#1e1b4b] to-[#581c87] text-white py-16 px-4 md:px-12"
     >
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
 
         {/* LEFT */}
-        <div className="text-left">
+        <div>
 
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+          <h2 className="text-3xl md:text-5xl font-bold">
             Ready to Plan <br />
             <span className="text-yellow-400">Something Epic?</span>
           </h2>
 
-          <p className="text-gray-300 mt-4 max-w-md text-sm md:text-base">
-            Tell us about your event and we’ll get back within 24 hours.
+          <p className="text-gray-300 mt-4 max-w-md">
+            Tell us about your event and we’ll help you plan something amazing.
           </p>
 
-          {/* CONTACT CARDS */}
           <div className="mt-8 space-y-4">
 
-            {["Location", "Phone", "Email", "Working Hours"].map((item, i) => (
-              <div
-                key={i}
-                className="bg-white/10 p-4 rounded-xl backdrop-blur-md border border-white/10 hover:bg-white/20 transition"
+            <div className="bg-white/10 p-4 rounded-xl">
+              <p className="text-xs uppercase text-gray-300">Location</p>
+              <p>Bangalore, India</p>
+            </div>
+
+            <div className="bg-white/10 p-4 rounded-xl">
+              <p className="text-xs uppercase text-gray-300">Phone</p>
+              <a href="tel:6366047276" className="hover:text-pink-300">
+                +91 63660 47276
+              </a>
+            </div>
+
+            <div className="bg-white/10 p-4 rounded-xl">
+              <p className="text-xs uppercase text-gray-300">Email</p>
+              <a
+                href="mailto:momentmakersmagic@gmail.com"
+                className="hover:text-pink-300 break-all"
               >
-                <p className="text-xs text-gray-300 uppercase">{item}</p>
-                <p className="font-medium">__________</p>
-              </div>
-            ))}
+                momentmakersmagic@gmail.com
+              </a>
+            </div>
+
+            <div className="bg-white/10 p-4 rounded-xl text-center">
+              <a
+                href="https://www.instagram.com/themomentmakers_01"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-to-r from-pink-500 via-purple-500 to-yellow-500 px-4 py-2 rounded-full text-sm"
+              >
+                📸 Instagram
+              </a>
+            </div>
 
           </div>
 
         </div>
 
         {/* RIGHT FORM */}
-        <div className="bg-white rounded-3xl p-6 md:p-8 text-black shadow-2xl">
+        <div className="bg-white text-black p-6 md:p-8 rounded-3xl shadow-2xl">
 
           <form onSubmit={handleSubmit} className="space-y-4">
 
-            {/* NAME + PHONE */}
             <div className="grid md:grid-cols-2 gap-4">
 
-              <div>
-                <input
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="Your Name"
-                  className={`border p-3 rounded-lg w-full outline-none transition
-                  ${errors.name ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
-                />
-                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-              </div>
-
-              <div>
-                <input
-                  name="phone"
-                  value={form.phone}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/\D/g, "");
-                    setForm({ ...form, phone: value });
-                  }}
-                  placeholder="Phone Number"
-                  maxLength="10"
-                  className={`border p-3 rounded-lg w-full outline-none transition
-                  ${errors.phone ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
-                />
-                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
-              </div>
-
-            </div>
-
-            {/* EMAIL */}
-            <div>
               <input
-                name="email"
-                value={form.email}
+                name="name"
+                value={form.name}
                 onChange={handleChange}
-                placeholder="Email Address"
-                className={`border p-3 rounded-lg w-full outline-none transition
-                ${errors.email ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
+                placeholder="Your Name"
+                className="border p-3 rounded-lg w-full"
               />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+
+              <input
+                name="phone"
+                value={form.phone}
+                onChange={(e) =>
+                  setForm({ ...form, phone: e.target.value.replace(/\D/g, "") })
+                }
+                placeholder="Phone Number"
+                maxLength="10"
+                className="border p-3 rounded-lg w-full"
+              />
+
             </div>
 
-            {/* EVENT + DATE */}
-            <div className="grid md:grid-cols-2 gap-4">
+            <input
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Email Address"
+              className="border p-3 rounded-lg w-full"
+            />
 
-              <div>
-                <select
-                  name="event"
-                  value={form.event}
-                  onChange={handleChange}
-                  className={`border p-3 rounded-lg w-full outline-none transition
-                  ${errors.event ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
-                >
-                  <option value="">Select Event Type</option>
-                  <option>Birthday Decoration</option>
-                  <option>Baby Shower</option>
-                  <option>Naming Ceremony</option>
-                  <option>Engagement</option>
-                  <option>Anniversary</option>
-                  <option>Photography & Video</option>
-                </select>
-                {errors.event && <p className="text-red-500 text-xs mt-1">{errors.event}</p>}
-              </div>
+            {/* 🔥 EVENT */}
+            <select
+              name="event"
+              value={form.event}
+              onChange={handleChange}
+              className="border p-3 rounded-lg w-full"
+            >
+              <option value="">Select Event Type</option>
+              <option>General Inquiry</option>
+              <option>Birthday Decoration</option>
+              <option>Baby Shower</option>
+              <option>Naming Ceremony</option>
+              <option>Engagement</option>
+              <option>Anniversary</option>
+              <option>Photography & Video</option>
+            </select>
 
-              <div>
+            {/* 🔥 DATE */}
+            {form.event !== "General Inquiry" && (
+              <>
                 <input
                   type="date"
                   name="date"
                   value={form.date}
                   onChange={handleChange}
                   min={new Date().toISOString().split("T")[0]}
-                  className={`border p-3 rounded-lg w-full outline-none transition
-                  ${errors.date ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
+                  className="border p-3 rounded-lg w-full"
                 />
-                {errors.date && <p className="text-red-500 text-xs mt-1">{errors.date}</p>}
-              </div>
+                <p className="text-xs text-gray-500">
+                  Select event date (DD/MM/YYYY)
+                </p>
+              </>
+            )}
 
-            </div>
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              placeholder="Tell us about your event..."
+              rows="4"
+              className="border p-3 rounded-lg w-full"
+            ></textarea>
 
-            {/* MESSAGE */}
-            <div>
-              <textarea
-                name="message"
-                value={form.message}
-                onChange={handleChange}
-                rows="4"
-                placeholder="Tell us about your event..."
-                className={`border p-3 rounded-lg w-full outline-none transition
-                ${errors.message ? "border-red-500" : "focus:ring-2 focus:ring-pink-400"}`}
-              ></textarea>
-              {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
-            </div>
-
-            {/* BUTTON */}
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-full font-semibold hover:scale-105 active:scale-95 transition"
-            >
+            <button className="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white py-3 rounded-full font-semibold">
               Send My Event Inquiry ✨
             </button>
+
+            <p className="text-xs text-gray-500 text-center">
+              You’ll be redirected to WhatsApp or Email
+            </p>
 
           </form>
 
@@ -220,10 +263,9 @@ function Contact() {
 
       </div>
 
-      {/* SUCCESS POPUP */}
       {success && (
-        <div className="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg animate-bounce">
-          ✅ Thank you! We’ll contact you within 24 hours.
+        <div className="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg">
+          ✅ Ready! Please complete sending in WhatsApp/Email
         </div>
       )}
     </section>

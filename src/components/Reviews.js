@@ -1,40 +1,10 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import { Autoplay } from "swiper/modules";
-
 function Reviews() {
-  const reviews = [
-    {
-      name: "Arjun Rao",
-      rating: 5,
-      text: "The birthday setup was beyond what we imagined. Everything was perfectly arranged and looked stunning!",
-    },
-    {
-      name: "Sneha Reddy",
-      rating: 4,
-      text: "Loved the baby shower decoration. Very elegant and well managed. Highly recommended!",
-    },
-    {
-      name: "Karthik Sharma",
-      rating: 5,
-      text: "Amazing work on my daughter's naming ceremony. Guests were impressed!",
-    },
-    {
-      name: "Priya Nair",
-      rating: 4,
-      text: "Great experience overall. Smooth execution and beautiful decoration.",
-    },
-    {
-      name: "Rahul Verma",
-      rating: 5,
-      text: "Professional team and creative ideas. Made our event unforgettable!",
-    },
-  ];
-
   return (
-    <section id="review" className="bg-white py-16 px-4 md:px-12 overflow-hidden">
-
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+    <section
+      id="review"
+      className="bg-white py-16 px-4 md:px-12 overflow-hidden"
+    >
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
 
         {/* LEFT */}
         <div className="text-left">
@@ -46,69 +16,75 @@ function Reviews() {
           </div>
 
           <h2 className="text-2xl md:text-4xl font-bold text-gray-800 leading-tight">
-            They Loved It. <br />
-            <span className="text-pink-500">You Will Too ❤️</span>
+            Real Reviews <br />
+            <span className="text-pink-500">Loading Soon...</span>
           </h2>
 
           <p className="text-gray-500 mt-3 text-sm md:text-base max-w-md">
-            We’re a growing Bangalore-based team creating memorable events with
-            creativity, care, and perfection.
+            We’re preparing to showcase real client experiences.
+            Stay tuned — your event could be the first featured story!
           </p>
+
+          {/* CTA */}
+          <button
+            onClick={() =>
+              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="mt-6 bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full transition"
+          >
+            Book Your Event
+          </button>
 
         </div>
 
-        {/* RIGHT SLIDER */}
-        <div className="relative">
+        {/* RIGHT */}
+        <div className="flex justify-center">
 
-          <Swiper
-            modules={[Autoplay]}
-            autoplay={{ delay: 3500, disableOnInteraction: false }}
-            loop={true}
-          >
+          {/* 🔥 LOADING CARD */}
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 border rounded-2xl p-8 md:p-10 text-center shadow-md max-w-md w-full">
 
-            {reviews.map((review, index) => (
-              <SwiperSlide key={index}>
+            {/* ⭐ ICON */}
+            <div className="text-5xl mb-4 animate-pulse">⭐</div>
 
-                {/* 🔥 CARD */}
-                <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 mx-2 text-center transition hover:shadow-2xl">
+            {/* LOADING TEXT */}
+            <h3 className="text-lg md:text-xl font-semibold text-gray-800">
+              Reviews Loading
+              <span className="dot-animate"></span>
+            </h3>
 
-                  {/* AVATAR */}
-                  <div className="w-14 h-14 rounded-full bg-pink-100 flex items-center justify-center text-pink-500 font-bold text-lg mx-auto mb-4">
-                    {review.name.charAt(0)}
-                  </div>
+            <p className="text-gray-500 text-sm mt-2">
+              Fetching client experiences...
+            </p>
 
-                  {/* RATING */}
-                  <div className="mb-3 text-yellow-400 text-lg">
-                    {"★".repeat(review.rating)}
-                    {"☆".repeat(5 - review.rating)}
-                  </div>
+            {/* 🔥 SKELETON LOADER */}
+            <div className="mt-6 space-y-3">
+              <div className="h-3 bg-gray-300 rounded animate-pulse"></div>
+              <div className="h-3 bg-gray-300 rounded w-4/5 mx-auto animate-pulse"></div>
+              <div className="h-3 bg-gray-300 rounded w-2/3 mx-auto animate-pulse"></div>
+            </div>
 
-                  {/* TEXT */}
-                  <p className="text-gray-600 italic text-sm md:text-base leading-relaxed min-h-[80px]">
-                    "{review.text}"
-                  </p>
-
-                  {/* NAME */}
-                  <div className="mt-5 font-semibold text-gray-800">
-                    {review.name}
-                  </div>
-
-                  {/* LOCATION */}
-                  <div className="text-xs text-gray-400 mt-1">
-                    Bangalore Client
-                  </div>
-
-                </div>
-
-              </SwiperSlide>
-            ))}
-
-          </Swiper>
+          </div>
 
         </div>
 
       </div>
 
+      {/* 🔥 DOT ANIMATION */}
+      <style>
+        {`
+          .dot-animate::after {
+            content: '';
+            animation: dots 1.5s infinite;
+          }
+
+          @keyframes dots {
+            0% { content: ''; }
+            33% { content: '.'; }
+            66% { content: '..'; }
+            100% { content: '...'; }
+          }
+        `}
+      </style>
     </section>
   );
 }
